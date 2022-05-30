@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,4 +23,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Query Methods
     List<User> findByName(String name);
     Optional<User> findByEmailAndName(String email, String name);
+
+    // Like
+    List<User> findByNameLike(String name);
+
+    // Or
+    List<User> findByNameOrEmail(String name, String email);
+
+    // Between
+    List<User> findByBirthDateBetween(LocalDate begin, LocalDate end);
+
+    // Like OrderBy
+    List<User> findByNameLikeOrderByIdDesc(String name);
+
+    // Containing OrderBy
+    List<User> findByNameContainingOrderByIdDesc(String name);
+
 }
