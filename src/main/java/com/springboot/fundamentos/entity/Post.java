@@ -24,15 +24,6 @@ public class Post {
         this.user = user;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Id
-    public Long getId() {
-        return id;
-    }
-
     public String getDescription() {
         return description;
     }
