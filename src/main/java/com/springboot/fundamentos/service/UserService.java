@@ -1,5 +1,7 @@
 package com.springboot.fundamentos.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.springboot.fundamentos.entity.User;
 import com.springboot.fundamentos.repository.UserRepository;
 import org.apache.commons.logging.Log;
@@ -27,5 +29,22 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public User create(User user) {
+        return userRepository.save(user);
+    }
+
+    public User update(Long id, User user) {
+        return userRepository.findById(id).map(
+                u -> {
+                    user.setId(u.getId());
+                    return userRepository.save(user);
+                }
+        ).orElseThrow(()-> new RuntimeException("No se encontro usuario a modificar"));
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
 }

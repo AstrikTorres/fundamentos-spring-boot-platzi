@@ -4,18 +4,16 @@ import com.springboot.fundamentos.entity.User;
 import com.springboot.fundamentos.service.UserService;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-public class GetUserImpl implements GetUser {
+public class UpdateUser {
+
     private UserService userService;
 
-    public GetUserImpl(UserService userService) {
+    public UpdateUser(UserService userService) {
         this.userService = userService;
     }
 
-    @Override
-    public List<User> getAll() {
-        return userService.getAllUsers();
+    public User update(Long id, User user) {
+        return userService.update(id, user);
     }
 }

@@ -4,18 +4,16 @@ import com.springboot.fundamentos.entity.User;
 import com.springboot.fundamentos.service.UserService;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-public class GetUserImpl implements GetUser {
+public class CreateUser {
+
     private UserService userService;
 
-    public GetUserImpl(UserService userService) {
+    public CreateUser(UserService userService) {
         this.userService = userService;
     }
 
-    @Override
-    public List<User> getAll() {
-        return userService.getAllUsers();
+    public User save(User user) {
+        return userService.create(user);
     }
 }

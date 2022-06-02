@@ -4,18 +4,21 @@ import com.springboot.fundamentos.entity.User;
 import com.springboot.fundamentos.service.UserService;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-public class GetUserImpl implements GetUser {
+public class DeleteUser {
+
     private UserService userService;
 
-    public GetUserImpl(UserService userService) {
+    public DeleteUser(UserService userService) {
         this.userService = userService;
     }
 
-    @Override
-    public List<User> getAll() {
-        return userService.getAllUsers();
+    public boolean remove(Long id) {
+        try {
+            userService.delete(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
