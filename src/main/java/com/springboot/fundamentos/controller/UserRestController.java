@@ -8,7 +8,11 @@ import com.springboot.fundamentos.caseuse.DeleteUser;
 import com.springboot.fundamentos.caseuse.GetUser;
 import com.springboot.fundamentos.caseuse.UpdateUser;
 import com.springboot.fundamentos.entity.User;
+import com.springboot.fundamentos.repository.UserRepository;
 import com.springboot.fundamentos.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,15 +32,18 @@ public class UserRestController {
     private CreateUser createUser;
     private UpdateUser updateUser;
     private DeleteUser deleteUser;
+    private UserRepository userRepository;
 
     public UserRestController(GetUser getUser,
                               CreateUser createUser,
                               UpdateUser updateUser,
-                              DeleteUser deleteUser) {
+                              DeleteUser deleteUser,
+                              UserRepository userRepository) {
         this.getUser = getUser;
         this.createUser = createUser;
         this.updateUser = updateUser;
         this.deleteUser = deleteUser;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -56,14 +63,22 @@ public class UserRestController {
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    ResponseEntity<ObjectNode> deleteUser(@PathVariable Long id) {
         String[] msg = {
-                "Deleted client",
+                "Deleted user",
                 "Try again - verify param"
         };
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode objectNode = objectMapper.createObjectNode();
+
         return deleteUser.remove(id)
-                ? ResponseEntity.status(HttpStatus.OK).body(msg[0])
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg[1]);
+                ? ResponseEntity.status(HttpStatus.OK).body(objectNode.put("message", msg[0]))
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(objectNode.put("message", msg[1]));
+    }
+
+    @GetMapping("/pageable")
+    Page getUserPageable(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }
